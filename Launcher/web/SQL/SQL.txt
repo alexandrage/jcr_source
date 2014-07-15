@@ -1,0 +1,3 @@
+
+1. Откройте файл "jcr_launcher.sql" и замените строку "table_name" на значение "$db_table" из файла "jcr_connect.php".
+2. Произведите SQL запрос на Вашем web-сервере имортируя файл "jcr_launcher.sql".

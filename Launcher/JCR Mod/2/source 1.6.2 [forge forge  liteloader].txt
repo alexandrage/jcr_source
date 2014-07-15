@@ -1,0 +1,362 @@
+
+Инструкция:
+
+ Вы собираетесь собрать JCR Mod под вашу версию Forge, для Minecraft 1.6.2+.
+  1. Посещаете сайт "files.minecraftforge.net" или "files.minecraftforge.net/minecraftforge/index_legacy.html" (для более старых версий).
+     Ищите Forge той версии, под которую вы собираете JCR Mod. Скачиваете его в варианте "src". Распаковываете скачанный архив в папку.
+  2. Запускаете файл "install.cmd". Ждете окончания установки Forge (он сам загрузит архив с MCP и части клиента) и декомпиляции клиента.
+  3. Переходите в папку "scr/minecraft/" и открываете поочередно каждый файл, что дан в списке ниже ("затронутые файлы", Forge).
+  4. Строки "* * * Название_файла:" (встречаются ниже) означают название файла, которому принадлежит код ниже этого названия до следующей такой строки.
+     Этот код нужно вставить в соответствующий этому названию открытый вами файл, следуя микроинструкциям, которые обозначены как "//".
+     Вы можете заметить ссылку или несколько ссылок (наподобии: "http://www.er-log.ru/.../"). Можно сразу заменить эту ссылку на свою, в точно таком формате.
+  5. После замены кода, запускаете файл "recompile.bat". Ждете окончание рекомпиляции. Запускаете файл "reobfuscate.bat". Ждете окончание реобфускации.
+  6. В папке "reobf" будет созданный вами JCR Mod. Открываете файл "Инструкция.txt" (для JCR Mod), данный в архиве с исходным кодом программы, читаете его.
+  
+Затронутые файлы:
+
+ (Forge)
+ 1. net/minecraft/client/multiplayer/NetClientHandler.java
+ 2. net/minecraft/client/Minecraft.java
+ 3. net/minecraft/client/gui/GuiMainMenu.java
+ 4. net/minecraft/util/Session.java
+ 5. cpw/mods/fml/common/launcher/FMLTweaker.java
+
+Исходный код:
+
+* * * NetClientHandler.java:
+
+// Ищем  метод с таким названием и полностью заменяем его тело на то, что дано ниже
+
+    private String sendSessionRequest(String par1Str, String par2Str, String par3Str)
+    {
+        try
+        {
+            URL var4 = new URL("http://www.er-log.ru/JCR_Launcher/scripts/jcr_joinserver.php?user=" + urlEncode(par1Str) + "&serverId=" + urlEncode(par3Str) + "&sessionId=" + urlEncode(mc.getSession().new_sessionId) + "&hash=" + urlEncode(mc.fg_fucn254(mc.appPath())) + "&client=" + urlEncode(mc.getClientFolder()) + "&mac=" + urlEncode(mc.getHWID()) + "&mods=" + mc.fg_fucn255(mc.getModsList() + mc.getSession().new_sessionId) + "&action=setServerId");
+            InputStream var5 = var4.openConnection(this.mc.getProxy()).getInputStream();
+            BufferedReader var6 = new BufferedReader(new InputStreamReader(var5));
+            String var7 = var6.readLine();
+            var6.close();
+            return var7;
+        }
+        catch (IOException var8)
+        {
+            return var8.toString();
+        }
+    }
+
+* * * Minecraft.java:
+
+// Ищем подобные строки тем, что даны ниже и вставляем их после этих строк
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.security.MessageDigest;
+import java.security.DigestInputStream;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Formatter;
+import java.math.BigInteger;
+import java.net.URLDecoder;
+import cpw.mods.fml.common.launcher.FMLTweaker;
+
+// Вставляете перед методом "public Minecraft(...)"
+
+    private static String clientFolder = null;
+    private static String HWID = null;
+    private static File gameDirectory = null;
+    private static boolean useMultiplayer = true;
+    private static List<String> mods_list = new ArrayList<String>();
+
+// Ищем с помощью программы поиска строк строку содержащюю "Session ID is" и удаляем её полностью (на код ниже (метода "Minecraft(...)") можно не смотреть, он дан как пример)
+	
+    public Minecraft(Session par1Session, int par2, int par3, boolean par4, boolean par5, File par6File, File par7File, File par8File, Proxy par9Proxy, String par10Str)
+    {
+        //this.field_94139_O.logInfo("(Session ID is " + par1Session.getSessionID() + ")");
+    }
+
+// Вставляете все то, что после символа "{" ниже до символа "}" в начало метода "startGame()"
+	
+    public void startGame() throws LWJGLException
+    {
+        if (session.new_sessionId.split("<::>")[3].equals("null")) useMultiplayer = false; else
+        checkLauncher(session.new_sessionId.split("<::>")[2], session.new_sessionId.split("<::>")[3]);
+        checkToCheats(session.new_sessionId.split("<::>")[5]);
+        this.clientFolder = session.new_sessionId.split("<::>")[1];
+        this.HWID = session.new_sessionId.split("<::>")[4];
+        this.gameDirectory = getGameDirectory(session.new_sessionId.split("<::>")[6], session.new_sessionId.split("<::>")[7]);
+        session.new_sessionId = fg_fucn255(session.getSessionID() + fg_fucn256(session.getSessionID(), 3));
+    }
+    
+// Все что ниже, вставляете после метода "startGame() { ... }"
+	
+	public void checkToCheats(String javaclasspath)
+	{
+        String sep = ";"; if (getPlatform() != 2) sep = ":";
+		String[] org_cp = javaclasspath.split(sep);
+		File[] loaded_files = FMLTweaker.getOrgSources();
+		
+		for (File file : loaded_files)
+		{
+			if (findString(org_cp, file.toString()) == 0)
+			{
+				System.err.println("Exit. Error code: 900");
+				this.shutdown();
+				break;
+			}
+		}
+	}
+	
+    public void checkLauncher(String path, String hash)
+    {
+        if (hash.equalsIgnoreCase(fg_fucn255(fg_fucn254(path)))) return;
+        else
+        {
+            System.err.println("Exit. Error code: 901");
+			this.shutdown();
+        }
+    }
+    
+    private static void findMods(String dir, String obj_path, boolean first_launch)
+    {
+        if (first_launch) mods_list.clear();
+        
+        File file = new File(dir + obj_path); file.mkdirs();
+        String[] content = file.list();
+        
+        for (String object : content)
+        {
+            File obj = new File(dir + obj_path + object);
+            
+            if (obj.isFile())
+            {
+                String end_titles = "";
+                if (object.contains(".")) end_titles = object.substring(object.lastIndexOf("."));
+                
+                if ((end_titles.equalsIgnoreCase(".jar")) || (end_titles.equalsIgnoreCase(".zip")) || (end_titles.equalsIgnoreCase(".litemod")) || (end_titles.equalsIgnoreCase(".class")))
+                {
+			        mods_list.add((obj_path + object).replaceAll(":", "<:s:>").replaceAll("\\\\", "<:s:>").replaceAll("/", "<:s:>") + "<:h:>" + fg_fucn254(dir + obj_path + object));
+                }
+            } else if (obj.isDirectory())
+            {
+                findMods(dir, obj_path + object + File.separator, false);
+            }
+        }
+    }
+	
+    public String getModsList()
+    {
+        if (!useMultiplayer) return "null";
+        findMods(new File(gameDirectory, clientFolder + File.separator + "mods").toString() + File.separator, "", true);
+        
+        String line_to_send = mods_list.size() == 0 ? "nomods" : "";
+		String[] mods_array = new String[mods_list.size()];
+		
+        for (int i = 0; i < mods_list.size(); i++) mods_array[i] = mods_list.get(i);
+		
+		Arrays.sort(mods_array);
+		
+		for (int i = 0; i < mods_array.length; i++) line_to_send = line_to_send + mods_array[i] + "<:f:>";
+		
+        return line_to_send.contains("<:f:>") ? line_to_send.substring(0, line_to_send.lastIndexOf("<:f:>")) : line_to_send;
+    }
+	
+    public static File getGameDirectory(String gameDirectory, String par_directory)
+    {
+        String home = System.getProperty("user.home", ".");
+        File fiDir;
+        switch (getPlatform())
+        {
+            case 0:
+            case 1:
+                fiDir = new File(home, gameDirectory + File.separator);
+                break;
+            case 2:
+                String appData = System.getenv(par_directory);
+                if (appData != null)
+                    fiDir = new File(appData, gameDirectory + File.separator);
+                else
+                    fiDir = new File(home, gameDirectory + File.separator);
+                break;
+            case 3:
+                fiDir = new File(home, "Library/Application Support/" + gameDirectory + File.separator);
+                break;
+            default:
+                fiDir = new File(home, gameDirectory + File.separator);
+        }
+		
+        return fiDir;
+    }
+	
+	// Поиск строки в массиве без учета регистра, при нахождении вернет 1, обратно - 0
+	private static int findString(String[] array, String str)
+	{
+		for (String s : array)
+			if (s.equalsIgnoreCase(str)) return 1;
+		
+		return 0;
+	}
+	
+	// Возвращает номер соответствующий платформе, на которой работает приложение
+    private static int getPlatform()
+    {
+        String osName = System.getProperty("os.name").toLowerCase();
+
+        if (osName.contains("win"))
+            return 2;
+        if (osName.contains("mac"))
+            return 3;
+        if (osName.contains("solaris"))
+            return 1;
+        if (osName.contains("sunos"))
+            return 1;
+        if (osName.contains("linux"))
+            return 0;
+        if (osName.contains("unix"))
+            return 0;
+
+        return 4;
+    }
+	
+    // Возвращает путь до исполняемого файла
+    public String appPath()
+    {
+        try { return URLDecoder.decode(net.minecraft.launchwrapper.Launch.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath().replace("libraries.jar", "minecraft.jar"), "UTF-8"); }
+        catch (Exception e) { e.printStackTrace(); return null; }
+    }
+	
+    // Расчитывает MD5 хеш-сумму файла
+    public static String fg_fucn254(String filename)
+    {
+        FileInputStream fis = null;
+        DigestInputStream dis = null;
+        BufferedInputStream bis = null;
+        Formatter formatter = null;
+        try
+        {
+            MessageDigest messagedigest = MessageDigest.getInstance("MD5");
+            fis = new FileInputStream(filename);
+            bis = new BufferedInputStream(fis);
+            dis = new DigestInputStream(bis, messagedigest);
+            while (dis.read() != -1);
+            byte abyte0[] = messagedigest.digest();
+            formatter = new Formatter();
+            byte abyte1[] = abyte0;
+            int i = abyte1.length;
+            for (int j = 0; j < i; j++)
+            {
+                byte byte0 = abyte1[j];
+                formatter.format("%02x", new Object[] { Byte.valueOf(byte0) });
+            }
+            return formatter.toString();
+        } catch (Exception e)
+        {
+            return "";
+        } finally
+        {
+            try { fis.close(); } catch (Exception e) {}
+            try { dis.close(); } catch (Exception e) {}
+            try { bis.close(); } catch (Exception e) {}
+            try { formatter.close(); } catch (Exception e) {}
+        }
+    }
+
+    // Расчитывает MD5 хеш-сумму строки
+    public static String fg_fucn255(String s)
+    {
+        String hash = null;
+        try
+        {
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            m.update(s.getBytes(), 0, s.length());
+            hash = new BigInteger(1, m.digest()).toString(16);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return hash;
+    }
+	
+    // Возвращает [n] последних символов из строки
+    private String fg_fucn256(String str, int num)
+    {
+        return str.substring(str.length() - num, str.length());
+    }
+	
+	public static boolean useMultiplayer()
+	{
+		return useMultiplayer;
+	}
+	
+	public String getClientFolder()
+	{
+		return this.clientFolder;
+	}
+	
+	public String getHWID()
+	{
+		return this.HWID;
+	}
+
+* * * GuiMainMenu.java:
+
+// Ищите метод "private void addSingleplayerMultiplayerButtons(int par1, int par2)", далее строку, содержащую "menu.multiplayer"
+// и вставляете этот код прямо перед ней: if (Minecraft.useMultiplayer())
+// Получится вот так:
+	
+    private void addSingleplayerMultiplayerButtons(int par1, int par2)
+    {
+        ...
+        if (Minecraft.useMultiplayer()) this.buttonList.add(new GuiButton(2, this.width / 2 - 100, par1 + par2 * 1, I18n.getString("menu.multiplayer")));
+		...
+    }
+
+* * * Session.java:
+
+// Вставляете после строки "class Session {"
+
+    public static String new_sessionId;
+
+// Удаляете строку "this.sessionId = " и все, что идет дальше нее в методе "Session(...) { ... }". На это место вставляете все что после символа "{" и до символа "}"
+	
+    public Session(String par1Str, String par2Str)
+    {
+        this.sessionId = par2Str.split("<::>")[0];
+        this.new_sessionId = par2Str;
+    }
+
+* * * FMLTweaker.java:
+
+// Вставляете после строки "public class FMLTweaker implements ITweaker {"
+
+	private static File[] org_sourse = null;
+	
+	public static File[] getOrgSources()
+	{
+		return org_sourse;
+	}
+	
+    public static File[] toFilesArray(List<java.net.URL> list)
+	{
+		if (list.size() == 0) return null;
+        File[] sources = new File[list.size()];
+		
+        try
+        {
+            for (int i = 0; i < list.size(); i++)
+            {
+                sources[i] = new File(list.get(i).toURI());
+            }
+            return sources;
+        } catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+    }
+	
+// Вставляете после "public void injectIntoClassLoader(LaunchClassLoader classLoader) {", обратите внимание на "{" (вставляете сразу после символа)
+
+	org_sourse = toFilesArray(classLoader.getSources());
