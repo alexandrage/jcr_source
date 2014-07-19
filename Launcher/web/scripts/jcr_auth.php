@@ -121,7 +121,7 @@
 			$md5_ass = $md5_lib	= $sha1_md5forge = $sha1_md5lloader = "null";
 		}
 		
-		$uuid			= md5(uniqid(rand(), 1)); // md5($getLogin);
+		$uuid			= md5($getLogin); // md5($getLogin);
 		$sha1_md5zip	= sha1($md5_zip);
 		$sha1_pass		= sha1($realPass);
 		$sha1_version	= sha1($version);
@@ -153,8 +153,8 @@
 		$sha1_md5lloader."<::>".handle_md5(md5($md5_program))."<::>".$first_hwid_auth."<::>". "<br>" .implode("<:f:>", $configs)."<::>".$getLogin."<br>".
 		"<::>".implode("<:f:>", $check_f)."<::>".$use_upload_images."<::>".$can_upload_cloak."<::>".Guard::encrypt(JGuard::stir_string($uuid), $HideAESKey);
 		
-		$md5_seskey	= handle_md5(md5($seskey));
-		$new_ses_id = handle_md5(md5($md5_seskey.substr($md5_seskey, -3)));
+		$md5_seskey	= $seskey;
+		$new_ses_id = $md5_seskey;
 		$db -> query("UPDATE $db_table SET $db_colSesId='$new_ses_id', $db_colAuthId='$seskey', $db_colUUID='$uuid' WHERE $db_colUser='$injLogin'") or die ("Error");
 		
 	} else if ($action == "report")

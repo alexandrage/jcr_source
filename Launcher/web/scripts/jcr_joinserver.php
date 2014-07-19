@@ -4,7 +4,7 @@
 	include ("../jcr_connect.php");
 	include ("../jcr_settings.php");
 	
-	/* ‚ыполнение кода версий 1.7+ */
+	/* Исполнение кода версий 1.7+ */
 	
 	if (($_SERVER['REQUEST_METHOD'] == 'POST') && (stripos($_SERVER["CONTENT_TYPE"], "application/json") === 0))
 	{
@@ -14,14 +14,14 @@
 		$sessionid	= sql_param($json -> accessToken);
 		$serverid	= sql_param($json -> serverId);
 		
-		if ($uuid == null || $sessionid == null || $serverid == null) die (json_error("Bad data"));
+		//if ($uuid == null || $sessionid == null || $serverid == null) die (json_error("Bad data"));
 		
 		$checkUUID = $db -> query("SELECT $db_colUser FROM $db_table WHERE $db_colUUID='$uuid'") or die (json_error("Error #1"));
 		if ($checkUUID -> num_rows == 1) { $row = $checkUUID -> fetch_assoc(); $user = $row[$db_colUser]; } else die ("Bad UUID");
 		
 		$ok = array('id' => md5($sessionKey.$user), 'name' => $user);
 		
-		$updateSesId = sha1($sessionKey.$sessionid);
+		$updateSesId = $sessionid;
 		$checkSession = $db -> query("SELECT $db_colUUID FROM $db_table WHERE $db_colUUID='$uuid' AND $db_colSesId='$sessionid'") or die (json_error("Error #2"));
 		
 		if ($checkSession -> num_rows == 1)
@@ -77,7 +77,7 @@
 		}
 		
 		exit();
-	}
+	} else {
 	
 	/* ‚ыполнение кода версий 1.6- */
 	
@@ -90,20 +90,20 @@
 	$action			= $db -> real_escape_string($_GET['action']);
 	$get_mods		= $_GET['mods'];
 	
-	if ($user == null || $sessionid == null || $serverid == null || $client == null || $get_mods == null || $action == null) die ("BadParams #1");
+	//if ($user == null || $sessionid == null || $serverid == null || $client == null || $get_mods == null || $action == null) die ("BadParams #1");
 	
 	if ($use_checkhash)
 	{
-		if ($hash == null) die ("BadParams #2");
-		if (!file_exists("../files/clients/$client/bin/minecraft.jar")) die ("Internal error");
-		if (!(strtolower($hash) == strtolower(md5_file("../files/clients/$client/bin/minecraft.jar")))) die ("Bad hash");
+		//if ($hash == null) die ("BadParams #2");
+		//if (!file_exists("../files/clients/$client/bin/minecraft.jar")) die ("Internal error");
+		//if (!(strtolower($hash) == strtolower(md5_file("../files/clients/$client/bin/minecraft.jar")))) die ("Bad hash");
 	}
 	
-	if ($action == "setServerId")
+	//if ($action == "setServerId")
 	{
-		if ($use_hwid_search) { if ($hwid != null) check_user_hwid($hwid, $user); else die ("BadParams #3"); }
+		//if ($use_hwid_search) { if ($hwid != null) check_user_hwid($hwid, $user); else die ("BadParams #3"); }
 		
-		$updateSesId = sha1($sessionKey.$sessionid);
+		$updateSesId = $sessionid;
 		$checkSession = $db -> query("SELECT $db_colUser FROM $db_table WHERE $db_colUser='$user' AND $db_colSesId='$sessionid'") or die ("Error #1");
 		
 		if ($checkSession -> num_rows == 1)
@@ -162,6 +162,7 @@
 			}
 		}
 	}
+}
 	
 	function sql_param($string)
 	{

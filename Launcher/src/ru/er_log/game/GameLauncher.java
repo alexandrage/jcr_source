@@ -49,7 +49,7 @@ public final class GameLauncher {
         }
         
         String username = Frame.frame.isOffline() ? Settings.off_user[0] : data[23];
-        String session = Frame.frame.isOffline() ? (version_above_1_7 ? Settings.off_sess[0] : Settings.off_sess[0] + "<::>" + BaseUtils.getClientName() + "<::>" + GuardUtils.appPath() + "<::>null<::>" + GuardUtils.getHWID() + "<::>" + getLibraryList(binDirectory, forge, liteloader) + "<::>" + Settings.game_directory[0] + "<::>" + Settings.par_directory[0]) : (version_above_1_7 ? GuardUtils.md5(sesKey) : GuardUtils.md5(sesKey) + "<::>" + BaseUtils.getClientName() + "<::>" + GuardUtils.appPath() + "<::>" + data[20] + "<::>" + GuardUtils.getHWID() + "<::>" + getLibraryList(binDirectory, forge, liteloader) + "<::>" + Settings.game_directory[0] + "<::>" + Settings.par_directory[0]);
+        String session = Frame.frame.isOffline() ? (version_above_1_7 ? Settings.off_sess[0] : Settings.off_sess[0]) : (version_above_1_7 ? sesKey : sesKey);
         
         List<String> properties = new ArrayList<>();
         List<String> tweak_args_list = new ArrayList<>();

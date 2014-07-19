@@ -42,7 +42,7 @@ public class Game extends JFrame {
         }
         
         String username = Frame.frame.isOffline() ? Settings.off_user[0] : data[23];
-        String session_num = Frame.frame.isOffline() ? Settings.off_sess[0] + "<::>" + BaseUtils.getClientName() + "<::>" + GuardUtils.appPath() + "<::>null<::>" + GuardUtils.getHWID() + "<::>" + getLibraryList() + "<::>" + Settings.game_directory[0] + "<::>" + Settings.par_directory[0] : GuardUtils.md5(sesKey) + "<::>" + BaseUtils.getClientName() + "<::>" + GuardUtils.appPath() + "<::>" + data[20] + "<::>" + GuardUtils.getHWID() + "<::>" + getLibraryList() + "<::>" + Settings.game_directory[0] + "<::>" + Settings.par_directory[0];
+        String session_num = Frame.frame.isOffline() ? Settings.off_sess[0] : sesKey;
         
         if (GuardUtils.use_jar_check && !Frame.frame.isOffline())
         {
