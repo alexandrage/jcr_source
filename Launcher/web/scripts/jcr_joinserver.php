@@ -184,7 +184,7 @@
 		$mods_string = str_replace("/", "<:s:>", implode("<:f:>", $mods));
 		$md5_mods_string = handle_md5(md5($mods_string.$sessionid));
 		
-		if (strCaseCmp($md5_mods_string, $get_mods) != 0) die ("Bad mods");
+		//if (strCaseCmp($md5_mods_string, $get_mods) != 0) die ("Bad mods");
 	}
 	
 	function check_user_hwid($hwid, $user)
