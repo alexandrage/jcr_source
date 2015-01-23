@@ -64,11 +64,11 @@ public class Settings {
     public static final String[] version			= { "v6.0.3_full_SRC" }; // Версия программы (не используйте символ пробела)
     
     public static final String[] par_directory			= { "AppData" }; // Родительская папка для Minecraft (только для Windows) [ProgramFiles, AppData]
-    public static final String[] game_directory			= { ".jcr_launcher" }; // Папка с Minecraft (.minecraft)
+    public static final String[] game_directory			= { "jcr" }; // Папка с Minecraft (.minecraft)
     
     /* Настройки подключения */
-    public static final String[] domain				= { "er-log.ru" }; // Домен сайта в формате: example.com
-    public static final String[] site_dir			= { "JCR_Launcher" }; // Директория к папке программы от корня сайта
+    public static final String[] domain				= { "alexandrage.ssh22.net" }; // Домен сайта в формате: example.com
+    public static final String[] site_dir			= { "web" }; // Директория к папке программы от корня сайта
     public static final String[] protect_key			= { "y@Ur_'k[e]Y" }; // Ключ защиты доступа к веб-части (равен ключу в веб-части). Пример: 17@Ee'45x_Fq;04
     public static final String[] aes_key			= { "123456789abcdefj" }; // Ключ для шифрования данных (равен ключу в веб-части, не более 16 символов)
     

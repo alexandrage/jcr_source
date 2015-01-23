@@ -3,9 +3,9 @@
 	
 	include("../jcr_settings.php");
 	
-	$action		=	$_GET['action'];
-	$getIP		=	$_GET['ip'];
-	$getPort	=	$_GET['port'];
+	@$action	=	$_GET['action'];
+	@$getIP		=	$_GET['ip'];
+	@$getPort	=	$_GET['port'];
 	
 	if($action == 'status' && $getIP != null && $getPort != null)
 	{	
@@ -41,7 +41,7 @@
 	{
 		for($i = 0; $i < count($servers); $i++)
 		{
-			$serversList = $serversList.$servers[$i].'<::>'.'<br>';
+			@$serversList = @$serversList.@$servers[$i].'<::>'.'<br>';
 		}
 		
 		echo substr_replace($serversList, '', strrpos($serversList, '<::>'));

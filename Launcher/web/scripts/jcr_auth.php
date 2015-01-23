@@ -5,20 +5,20 @@
 	include("../jcr_settings.php");
 	include("jcr_security.php");
 	
-	$action		= $db -> real_escape_string($_POST["action"]);
-	$getLogin	= $db -> real_escape_string($_POST["login"]);
-	$getPass	= $db -> real_escape_string($_POST["password"]);
-	$appHash	= $db -> real_escape_string($_POST["hash"]);
-	$appForm	= $db -> real_escape_string($_POST["format"]);
-	$client		= $db -> real_escape_string($_POST["client"]);
-	$cl_vers	= $db -> real_escape_string($_POST["version"]);
-	$forge		= $db -> real_escape_string($_POST["forge"]);
-	$liteloader	= $db -> real_escape_string($_POST["liteloader"]);
-	$hwid		= $db -> real_escape_string($_POST["mac"]);
-	$secCode	= $db -> real_escape_string($_POST["code"]);
-	$files		= $db -> real_escape_string($_POST["files"]);
-	$message	= $db -> real_escape_string($_POST["message"]);
-	$authSes	= $db -> real_escape_string($_POST["session"]);
+	@$action	= $db -> mysql_real_escape_string($_POST["action"]);
+	@$getLogin	= $db -> mysql_real_escape_string($_POST["login"]);
+	@$getPass	= $db -> mysql_real_escape_string($_POST["password"]);
+	@$appHash	= $db -> mysql_real_escape_string($_POST["hash"]);
+	@$appForm	= $db -> mysql_real_escape_string($_POST["format"]);
+	@$client	= $db -> mysql_real_escape_string($_POST["client"]);
+	@$cl_vers	= $db -> mysql_real_escape_string($_POST["version"]);
+	@$forge		= $db -> mysql_real_escape_string($_POST["forge"]);
+	@$liteloader= $db -> mysql_real_escape_string($_POST["liteloader"]);
+	@$hwid		= $db -> mysql_real_escape_string($_POST["mac"]);
+	@$secCode	= $db -> mysql_real_escape_string($_POST["code"]);
+	@$files		= $db -> mysql_real_escape_string($_POST["files"]);
+	@$message	= $db -> mysql_real_escape_string($_POST["message"]);
+	@$authSes	= $db -> mysql_real_escape_string($_POST["session"]);
 	
 	if (!($secCode == sha1($protectKey))) die("BadCode");
 	
@@ -74,7 +74,7 @@
 			if (!file_exists("../files/clients/$client/bin/libraries.jar"))		$not_exists_elements[] = "'bin/libraries.jar'";
 			if (!file_exists("../files/clients/$client/extra.zip"))				$not_exists_elements[] = "'extra.zip'";
 			if (!file_exists("../files/clients/$client/bin/natives.zip"))		$not_exists_elements[] = "'bin/natives.zip'";
-			if ($not_exists_elements != null) die ("Error: Some elements of client '".$client."' not detected: ".implode(", ", $not_exists_elements));
+			if (@$not_exists_elements != null) die ("Error: Some elements of client '".$client."' not detected: ".implode(", ", $not_exists_elements));
 			
 			if (strcasecmp($forge, "true") == 0 && !file_exists("../files/clients/$client/bin/forge.jar"))
 				die ("Error: Some elements of client '".$client."' not detected: 'bin/forge.jar'");
@@ -89,7 +89,7 @@
 			if (!file_exists("../files/clients/$client/bin/jinput.jar"))		$not_exists_elements[] = "'bin/jinput.jar'";
 			if (!file_exists("../files/clients/$client/extra.zip"))				$not_exists_elements[] = "'extra.zip'";
 			if (!file_exists("../files/clients/$client/bin/natives.zip"))		$not_exists_elements[] = "'bin/natives.zip'";
-			if ($not_exists_elements != null) die ("Error: Some elements of client '".$client."' not detected: ".implode(", ", $not_exists_elements));
+			if (@$not_exists_elements != null) die ("Error: Some elements of client '".$client."' not detected: ".implode(", ", $not_exists_elements));
 		}
 		
 		if (!file_exists("../files/program/".$programName.$appForm)) die ("Error: Program update file is not detected in 'files/program/".$programName.$appForm."'");
@@ -229,7 +229,7 @@
 		{
 			$char = $chars[rand(0, 25)];
 			if (rand(0, 1) == 0) $char = strtoupper($char);
-			$randStr = $randStr.$char;
+			@$randStr = $randStr.$char;
 		}
 		
 		return $randStr;

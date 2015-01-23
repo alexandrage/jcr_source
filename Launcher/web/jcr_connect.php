@@ -17,12 +17,12 @@
 	'hash_drupal'     	- интеграция с Drupal (v7)
 	'hash_webmcr'     	- интеграция с webMCR (v2.35)
 */
-	$crypt				= 'hash_wordpress'; 			// Интеграция (таблица выше)
+	$crypt				= 'hash_md5'; 			// Интеграция (таблица выше)
 	
 	$db_host			= 'localhost';					// Ip-адрес базы данных
 	$db_port			= '3306';						// Порт базы данных
-	$db_user			= 'user';						// Пользователь базы данных
-	$db_pass			= 'password';					// Пароль базы данных
+	$db_user			= 'root';						// Пользователь базы данных
+	$db_pass			= '';					// Пароль базы данных
 	
 /*
 	$db_database - имя базы данных, значение по умолчанию:
@@ -31,8 +31,8 @@
 	CAuth = 'cauth'
 	Joomla, IPB, XenForo, WordPress, vBulletin, DLE, Drupal, webMCR - отсутствует (указывается вручную)
 */
-	$db_database		= 'database';					// База данных
-	$encoding			= 'cp1251';						// Кодировка базы данных: cp1251 or UTF8 ...
+	$db_database		= 'w';					// База данных
+	$encoding			= 'UTF8';						// Кодировка базы данных: cp1251 or UTF8 ...
 	
 /*
 	$db_table - таблица базы данных, значение по умолчанию:
@@ -48,7 +48,7 @@
 	Drupal = 'префикс_users' - пример 'drupal_users', где "drupal_" - префикс. Примечание префикс может отсутствовать - пример 'users'
 	webMCR = 'accounts'
 */
-	$db_table			= 'wp_users';					// Таблица с пользователями
+	$db_table			= 'accounts';					// Таблица с пользователями
 	
 /*
 	$db_colId - уникальный идентификатор, значение по умолчанию
@@ -80,7 +80,7 @@
 	Drupal = 'name'
 	webMCR = 'login'
 */
-	$db_colUser		= 'user_login';						// Колонка с именами пользователей
+	$db_colUser		= 'login';						// Колонка с именами пользователей
 	  
 /*
 	$db_colPass - колонка пароля, значение по умолчанию:
@@ -96,14 +96,14 @@
 	Drupal = 'pass'
 	webMCR = 'password'
 */
-	$db_colPass		= 'user_pass';						// Колонка с паролями пользователей
+	$db_colPass		= 'password';						// Колонка с паролями пользователей
 	
 	$db_colSalt		= 'members_pass_salt';				// Настройка для IPB (members_pass_salt) и vBulletin (salt)
 	$db_tableOther	= 'xf_user_authenticate';			// Доп. таблица для интеграции с XenForo
 	
 	
-	$db_colSesId	= 'sesId';							// Не трогать, колонка с сессиями пользователей
-	$db_colServer	= 'serverId';						// Не трогать, колонка с серверами пользователей
+	$db_colSesId	= 'session';							// Не трогать, колонка с сессиями пользователей
+	$db_colServer	= 'server';						// Не трогать, колонка с серверами пользователей
 	$db_colHWID		= 'HWID';							// Не трогать, колонка с HWID пользователя
 	$db_colBlHWIDs	= 'blockedHWIDs';					// Не трогать, колонка с заблокированными HWID
 	$db_colAuthId	= 'authSesId';						// Не трогать, колонка с сессиями при авторизации

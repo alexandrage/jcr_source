@@ -16,12 +16,7 @@
 	
 	function sql_param($string)
 	{
-		global $db;
-		(string) $string = $string;
-		$string = PREG_REPLACE("/[^\w- ]|INSERT|DELETE|UPDATE|UNION|SET|SELECT|TRUNCATE|DROP|TABLE/i", "", $string);
-		$string = TRIM($string);
-		$db -> real_escape_string($string);
-		return $string;
+		return mysql_real_escape_string($string);
 	}
 	
 ?>

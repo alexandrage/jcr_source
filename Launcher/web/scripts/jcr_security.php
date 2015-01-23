@@ -18,7 +18,7 @@
 				$rand	= rand(0, strlen($string)); // новая позиция "обрезка" в строке
 				$string	= substr($string, 0, $rand).$cut.substr($string, $rand, $max_str_len); // возвращение "обрезка" в строку на новую позицию
 				
-				$coodrs = $rand.":".$rand_2.":".$rand_1 . $coodrs;
+			    @$coodrs = $rand.":".$rand_2.":".$rand_1 . $coodrs;
 				if ($i + 1 < $processing_num) $coodrs = "::" . $coodrs;
 			}
 			

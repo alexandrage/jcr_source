@@ -28,9 +28,9 @@
 	
 	/* Выполнение кода версий 1.6- */
 	
-	$user			= sql_param($_GET['user']);
-	$sessionid		= sql_param($_GET['sessionId']);
-	$serverid		= sql_param($_GET['serverId']);
+	@$user			= sql_param($_GET['user']);
+	@$sessionid		= sql_param($_GET['sessionId']);
+	@$serverid		= sql_param($_GET['serverId']);
 
 	$checkSession = $db -> query("SELECT $db_colUser FROM $db_table WHERE $db_colUser='$user' AND $db_colSesId='$sessionid'") or die ("Error #1");
 		
@@ -44,12 +44,7 @@
 	
 	function sql_param($string)
 	{
-		global $db;
-		(string) $string = $string;
-		$string = PREG_REPLACE("/[^\w- ]|INSERT|DELETE|UPDATE|UNION|SET|SELECT|TRUNCATE|DROP|TABLE/i", "", $string);
-		$string = TRIM($string);
-		$db -> real_escape_string($string);
-		return $string;
+		return mysql_real_escape_string($string);
 	}
 	
 	/* *** FUNCTIONS *** */

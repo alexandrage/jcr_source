@@ -73,21 +73,14 @@
 	
 	$servers			= array 				// Список серверов в программе: < Название [Уникальное!] :: IP-адрес :: Порт :: Версия Minecraft (указана в левом нижнем углу клиента) :: Используется Forge (true или false) (false, если версия меньше 1.6) :: Используется LiteLoader (true или false) (false, если версия меньше 1.6) >
 	(
-		"The First Server :: sv1.ensemplix.ru :: 25565 :: 1.6.2 :: true :: true",
-		"The Second Server :: sv2.ensemplix.ru :: 25563 :: 1.6.4 :: true :: true",
-		"The Third Server :: sv3.ensemplix.ru :: 25565 :: 1.5.2 :: false :: false",
-		"CRaFT4ik Local Server :: 192.168.3.239 :: 25565 :: 1.6.4 :: true :: false",
-		"Original Test Server :: 192.168.3.239 :: 25564 :: 1.6.4 :: false :: false",
-		"Forge Test Server :: 192.168.3.239 :: 25563 :: 1.5.2 :: false :: false",
-		"Latest Test Server :: 192.168.3.239 :: 25566 :: 1.7.2 :: true :: false",
-		"Test Server :: 192.168.3.239 :: 25565 :: 1.7.9 :: false :: false",
+		"test :: 192.168.3.239 :: 25565 :: 1.6.4 :: true :: false",
+		"test :: 192.168.3.239 :: 25564 :: 1.6.4 :: false :: false",
 	);
 	
 	$pauseMon			= false; 				// Приостановить мониторинг всех серверов (тех. работы)
 	$pauseSelMon		= array 				// Приостановить мониторинг выбранных серверов (тех. работы): < IP-адрес :: Порт >
 	(
 		"sv2.ensemplix.ru :: 25563",
-		"sv4.ensemplix.ru :: 25565",
 	);
 	
 	$blocked_processes	= array 				// Список запрещенных процессов, выполняемых системой во время работы программы

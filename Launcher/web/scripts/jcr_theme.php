@@ -60,9 +60,9 @@
 	
 	/* POST-операции */
 	
-	$action		=	$_POST["action"];
-	$client		=	$_POST["client"];
-	$upd_files	=	$_POST["updateFiles"];
+	@$action		=	$_POST["action"];
+	@$client		=	$_POST["client"];
+	@$upd_files	=	$_POST["updateFiles"];
 	
 	if ($action == "updateSize") // Суммарный размер предстоящего обновления
 	{
