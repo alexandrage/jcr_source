@@ -5,27 +5,27 @@
 	include("../jcr_settings.php");
 	include("jcr_security.php");
 	
-	@$action	= $db -> mysql_real_escape_string($_POST["action"]);
-	@$getLogin	= $db -> mysql_real_escape_string($_POST["login"]);
-	@$getPass	= $db -> mysql_real_escape_string($_POST["password"]);
-	@$appHash	= $db -> mysql_real_escape_string($_POST["hash"]);
-	@$appForm	= $db -> mysql_real_escape_string($_POST["format"]);
-	@$client	= $db -> mysql_real_escape_string($_POST["client"]);
-	@$cl_vers	= $db -> mysql_real_escape_string($_POST["version"]);
-	@$forge		= $db -> mysql_real_escape_string($_POST["forge"]);
-	@$liteloader= $db -> mysql_real_escape_string($_POST["liteloader"]);
-	@$hwid		= $db -> mysql_real_escape_string($_POST["mac"]);
-	@$secCode	= $db -> mysql_real_escape_string($_POST["code"]);
-	@$files		= $db -> mysql_real_escape_string($_POST["files"]);
-	@$message	= $db -> mysql_real_escape_string($_POST["message"]);
-	@$authSes	= $db -> mysql_real_escape_string($_POST["session"]);
+	@$action	= sql_param($_POST["action"]);
+	@$getLogin	= sql_param($_POST["login"]);
+	@$getPass	= sql_param($_POST["password"]);
+	@$appHash	= sql_param($_POST["hash"]);
+	@$appForm	= sql_param($_POST["format"]);
+	@$client	= sql_param($_POST["client"]);
+	@$cl_vers	= sql_param($_POST["version"]);
+	@$forge		= sql_param($_POST["forge"]);
+	@$liteloader= sql_param($_POST["liteloader"]);
+	@$hwid		= sql_param($_POST["mac"]);
+	@$secCode	= sql_param($_POST["code"]);
+	@$files		= sql_param($_POST["files"]);
+	@$message	= sql_param($_POST["message"]);
+	@$authSes	= sql_param($_POST["session"]);
 	
 	if (!($secCode == sha1($protectKey))) die("BadCode");
 	
 	if (!preg_match("/^[a-zA-Z0-9_]+$/", $getLogin) || !preg_match("/^[a-zA-Z0-9_]+$/", $getPass)) die("BadData");
 	
-	$hwid		= sql_param($hwid);
-	$getLogin	= sql_param($getLogin);
+	$hwid		= $hwid;
+	$getLogin	= $getLogin;
 	$injLogin	= $getLogin;
 	
 	if ($crypt == 'hash_md5' || $crypt == 'hash_authme' || $crypt == 'hash_xauth' || $crypt == 'hash_cauth' || $crypt == 'hash_joomla' || $crypt == 'hash_wordpress' || $crypt == 'hash_dle' || $crypt == 'hash_drupal' || $crypt == 'hash_webmcr')
@@ -237,12 +237,7 @@
 	
 	function sql_param($string)
 	{
-		global $db;
-		(string) $string = $string;
-		$string = PREG_REPLACE("/[^\w- ]|INSERT|DELETE|UPDATE|UNION|SET|SELECT|TRUNCATE|DROP|TABLE/i", "", $string);
-		$string = TRIM($string);
-		$db -> real_escape_string($string);
-		return $string;
+		return mysql_real_escape_string($string);
 	}
 	
 	// Проверяет наличие прав на загрузку плаща
