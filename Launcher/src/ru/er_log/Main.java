@@ -10,8 +10,8 @@ public class Main {
     {
         if (!BaseUtils.getPropertyBoolean("program_started"))
         {
-            //Frame.reportErr("Пожалуйста, используйте в качестве главного класса '" + Starter.class.getCanonicalName() + "'");
-            //return;
+            Frame.reportErr("Пожалуйста, используйте в качестве главного класса '" + Starter.class.getCanonicalName() + "'");
+            return;
         }
         
         BaseUtils.setProperty("program_started", false);
