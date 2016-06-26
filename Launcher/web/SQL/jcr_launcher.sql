@@ -1,9 +1,9 @@
 
 	/* Добавление значений sesId и serverId в таблицу */
 	
-	ALTER TABLE table_name
-	ADD sesId varchar(255) DEFAULT '0',
-	ADD serverId varchar(255) DEFAULT '0',
+	ALTER TABLE accounts
+	ADD session varchar(255) DEFAULT '0',
+	ADD server varchar(255) DEFAULT '0',
 	ADD HWID varchar(255) DEFAULT '0',
 	ADD blockedHWIDs varchar(255) DEFAULT '0',
 	ADD authSesId varchar(255) DEFAULT '0',

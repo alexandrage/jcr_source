@@ -22,7 +22,7 @@
 	$db_host			= 'localhost';					// Ip-адрес базы данных
 	$db_port			= '3306';						// Порт базы данных
 	$db_user			= 'root';						// Пользователь базы данных
-	$db_pass			= '';					// Пароль базы данных
+	$db_pass			= 'root';					    // Пароль базы данных
 	
 /*
 	$db_database - имя базы данных, значение по умолчанию:
@@ -31,8 +31,8 @@
 	CAuth = 'cauth'
 	Joomla, IPB, XenForo, WordPress, vBulletin, DLE, Drupal, webMCR - отсутствует (указывается вручную)
 */
-	$db_database		= 'w';					// База данных
-	$encoding			= 'UTF8';						// Кодировка базы данных: cp1251 or UTF8 ...
+	$db_database		= 'fix';					// База данных
+	$encoding			= 'UTF8';					// Кодировка базы данных: cp1251 or UTF8 ...
 	
 /*
 	$db_table - таблица базы данных, значение по умолчанию:

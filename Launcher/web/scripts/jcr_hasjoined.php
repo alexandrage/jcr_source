@@ -2,6 +2,7 @@
 
 	define ('IMPASS_CHECK', true);
 	include ("../jcr_connect.php");
+	include ("../jcr_uuid.php");
 	
 	$user		= sql_param($_GET['username']);
 	$serverid	= sql_param($_GET['serverId']);
@@ -13,7 +14,7 @@
 	
 	if ($result -> num_rows == 1)
 	{
-		$time = time(); $id = md5($sessionKey.$user);
+		$time = time(); $id = uuidConvert($realUser);
 		$base64 = '{"timestamp": '.$time.'", "profileId": "'.$id.'", "profileName": "'.$realUser.'", "isPublic": true, "textures": {"SKIN": {"url": "'.get_skins_url($realUser).'"}}}';
 		echo '{"id": "'.$id.'", "name": "'.$realUser.'", "properties": [{"name": "textures", "value": "'.base64_encode($base64).'", "signature": ""}]}';
 	} else

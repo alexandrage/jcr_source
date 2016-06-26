@@ -3,23 +3,23 @@
 	
 	include("../jcr_connect.php");
 	include("../jcr_settings.php");
+	include("../jcr_uuid.php");
 	include("jcr_security.php");
 	
-	@$action	= sql_param($_POST["action"]);
-	@$getLogin	= sql_param($_POST["login"]);
-	@$getPass	= sql_param($_POST["password"]);
-	@$appHash	= sql_param($_POST["hash"]);
-	@$appForm	= sql_param($_POST["format"]);
-	@$client	= sql_param($_POST["client"]);
-	@$cl_vers	= sql_param($_POST["version"]);
-	@$forge		= sql_param($_POST["forge"]);
-	@$liteloader= sql_param($_POST["liteloader"]);
-	@$hwid		= sql_param($_POST["mac"]);
-	@$secCode	= sql_param($_POST["code"]);
-	@$files		= sql_param($_POST["files"]);
-	@$message	= sql_param($_POST["message"]);
-	@$authSes	= sql_param($_POST["session"]);
-	
+	@$action	= mysql_escape_string($_POST["action"]);
+	@$getLogin	= mysql_escape_string($_POST["login"]);
+	@$getPass	= mysql_escape_string($_POST["password"]);
+	@$appHash	= mysql_escape_string($_POST["hash"]);
+	@$appForm	= mysql_escape_string($_POST["format"]);
+	@$client	= mysql_escape_string($_POST["client"]);
+	@$cl_vers	= mysql_escape_string($_POST["version"]);
+	@$forge		= mysql_escape_string($_POST["forge"]);
+	@$liteloader= mysql_escape_string($_POST["liteloader"]);
+	@$hwid		= mysql_escape_string($_POST["mac"]);
+	@$secCode	= mysql_escape_string($_POST["code"]);
+	@$files		= mysql_escape_string($_POST["files"]);
+	@$message	= mysql_escape_string($_POST["message"]);
+	@$authSes	= mysql_escape_string($_POST["session"]);
 	if (!($secCode == sha1($protectKey))) die("BadCode");
 	
 	if (!preg_match("/^[a-zA-Z0-9_]+$/", $getLogin) || !preg_match("/^[a-zA-Z0-9_]+$/", $getPass)) die("BadData");
@@ -121,7 +121,7 @@
 			$md5_ass = $md5_lib	= $sha1_md5forge = $sha1_md5lloader = "null";
 		}
 		
-		$uuid			= md5($getLogin); // md5($getLogin);
+		$uuid			= uuidConvert($getLogin); // md5($getLogin);
 		$sha1_md5zip	= sha1($md5_zip);
 		$sha1_pass		= sha1($realPass);
 		$sha1_version	= sha1($version);
@@ -149,19 +149,17 @@
 		if ($upload_images && $skins_url == null && $cloaks_url == null) $use_upload_images = 'true'; else $use_upload_images = 'false';
 		if ($access_to_upload_cloak) $can_upload_cloak = 'true'; else $can_upload_cloak = 'false';
 		
+		$db -> query("UPDATE $db_table SET $db_colSesId='$seskey', $db_colAuthId='$seskey', $db_colUUID='$uuid' WHERE $db_colUser='$injLogin'") or die ("Error2");
+		
 		echo "<br>"."<::>".$programName.$appForm."<::>".$md5_natives."<::>".$md5_ass."<::>".$md5_lib."<::>".$sha1_md5forge."<::>".
 		$sha1_md5lloader."<::>".handle_md5(md5($md5_program))."<::>".$first_hwid_auth."<::>". "<br>" .implode("<:f:>", $configs)."<::>".$getLogin."<br>".
 		"<::>".implode("<:f:>", $check_f)."<::>".$use_upload_images."<::>".$can_upload_cloak."<::>".Guard::encrypt(JGuard::stir_string($uuid), $HideAESKey);
-		
-		$md5_seskey	= $seskey;
-		$new_ses_id = $md5_seskey;
-		$db -> query("UPDATE $db_table SET $db_colSesId='$new_ses_id', $db_colAuthId='$seskey', $db_colUUID='$uuid' WHERE $db_colUser='$injLogin'") or die ("Error");
 		
 	} else if ($action == "report")
 	{
 		if ($getLogin == null || $files == null || $authSes == null) die ("BadParams");
 		
-		$mq = $db -> query("SELECT $db_colUser FROM $db_table WHERE $db_colUser='$getLogin' AND $db_colAuthId='$authSes'") or die ("Error");
+		$mq = $db -> query("SELECT $db_colUser FROM $db_table WHERE $db_colUser='$getLogin' AND $db_colAuthId='$authSes'") or die ("Error3");
 		
 		if ($mq -> num_rows == 1)
 		{
@@ -177,11 +175,11 @@
 			
 			$text = "Date: ".date("d.m.Y H:i")."\nLogin: ".$getLogin."\nFound files (".count($find_files_array)."):\n".$find_files.$note."*************************\n";
 			
-			$fp = fopen($file, 'a') or die ("Error");
+			$fp = fopen($file, 'a') or die ("Error1");
 			fwrite($fp, $text);
 			fclose($fp);
 			echo "Done";
-		} else die ("Error");
+		} else die ("Error2");
 	} else if ($action == "upload_skin")
 	{
 		if (!$upload_images) die ("NoAccess");
@@ -233,11 +231,6 @@
 		}
 		
 		return $randStr;
-	}
-	
-	function sql_param($string)
-	{
-		return mysql_real_escape_string($string);
 	}
 	
 	// Проверяет наличие прав на загрузку плаща

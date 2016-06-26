@@ -3,6 +3,7 @@
 	define ('IMPASS_CHECK', true);
 	include ("../jcr_connect.php");
 	include ("../jcr_settings.php");
+	include ("../jcr_uuid.php");
 	
 	/* Исполнение кода версий 1.7+ */
 	

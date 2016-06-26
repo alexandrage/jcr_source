@@ -57,7 +57,7 @@ public class Settings {
      */
     
     /* Основные настройки программы */
-    public static final String[] debugKey			= { "d[E]bUg_+Ke'Y" }; // ВНИМАНИЕ! Ключ для отладки программы (пропускать запрос об обновлении программы); ОСТАВИТЬ СТРОКУ ПУСТОЙ при окончательной сборке программы! При настройке программы, скопируйте схожий параметр из файла настроек веб-части
+    public static final String[] debugKey			= { "debugKey" }; // ВНИМАНИЕ! Ключ для отладки программы (пропускать запрос об обновлении программы); ОСТАВИТЬ СТРОКУ ПУСТОЙ при окончательной сборке программы! При настройке программы, скопируйте схожий параметр из файла настроек веб-части
     
     public static final String[] title				= { "JCR Launcher" }; // Название окна программы
     public static final String[] title_in_game			= { "Minecraft" }; // Название окна программы после запуска игры
@@ -67,9 +67,9 @@ public class Settings {
     public static final String[] game_directory			= { "jcr" }; // Папка с Minecraft (.minecraft)
     
     /* Настройки подключения */
-    public static final String[] domain				= { "alexandrage.ssh22.net" }; // Домен сайта в формате: example.com
+    public static final String[] domain				= { "localhost" }; // Домен сайта в формате: example.com
     public static final String[] site_dir			= { "web" }; // Директория к папке программы от корня сайта
-    public static final String[] protect_key			= { "y@Ur_'k[e]Y" }; // Ключ защиты доступа к веб-части (равен ключу в веб-части). Пример: 17@Ee'45x_Fq;04
+    public static final String[] protect_key			= {"protectKey"}; // Ключ защиты доступа к веб-части (равен ключу в веб-части). Пример: 17@Ee'45x_Fq;04
     public static final String[] aes_key			= { "123456789abcdefj" }; // Ключ для шифрования данных (равен ключу в веб-части, не более 16 символов)
     
      // Надпись под логотипом, Размер шрифта, Номер шрифта (в файле настроек темы), Цвет (HTML формат)
